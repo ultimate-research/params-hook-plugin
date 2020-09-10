@@ -6,14 +6,12 @@ A plugin allowing for centralized hooking of parameter files, allowing multiple 
 ## Usage
 ```rust
 fn params_main(params_info: &smash::params::ParamsInfo<'_>) {
-    let _ = params_info
-        .get::<StaticCommonParams>()
-        .map(|mut param_obj: StaticCommonParams| {
-            param_obj.shield_damage_mul = 0.0;
-            param_obj.precede = 3;
-            param_obj.cliff_max_count = 0;
-            param_obj.invalid_capture_frame = 900;
-        });
+    if let Ok(common) = params_info.get::<StaticCommonParams>() {
+        common.shield_damage_mul = 0.0;
+        common.precede = 3;
+        common.cliff_max_count = 0;
+        common.invalid_capture_frame = 900;
+    }
 }
 
 // in main
