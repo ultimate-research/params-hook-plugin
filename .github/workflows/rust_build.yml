@@ -4,10 +4,11 @@ on:
   push:
     branches: [ master ]
 jobs:
-  build:
+  plugin:
     runs-on: ubuntu-latest
     container: jugeeya/cargo-skyline:latest
-
+    env:
+      PLUGIN_NAME: 'libparam_hook.nro'  #  change this to the name of your plugin
     steps:
     - name: Clone master
       run: git clone https://github.com/ultimate-research/param-hook-plugin
@@ -15,9 +16,19 @@ jobs:
     - name: Build release NRO
       run: cargo skyline build --release
       working-directory: /volume/param-hook-plugin
-    - name: Update Release
-      env:
-        PLUGIN_NAME: 'libparam_hook.nro'  #  change this to the name of your plugin
+    - name: Upload plugin artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: plugin
+        path: /volume/param-hook-plugin/target/aarch64-skyline-switch/release/${{env.PLUGIN_NAME}}
+  upload:
+    runs-on: ubuntu-latest
+    needs:
+      - plugin
+    steps:
+    - name: Download all artifacts
+      uses: actions/download-artifact@v2
+    - name: Upload release
       uses: meeDamian/github-release@2.0
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
@@ -28,4 +39,4 @@ jobs:
         name: master
         body: Build of ${{env.PLUGIN_NAME}} from master.
         files: >
-          /volume/param-hook-plugin/target/aarch64-skyline-switch/release/${{env.PLUGIN_NAME}}
+          plugin/${{env.PLUGIN_NAME}}
