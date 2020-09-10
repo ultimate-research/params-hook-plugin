@@ -4,27 +4,28 @@ on:
   push:
     branches: [ master ]
 jobs:
-  runs-on: ubuntu-latest
-  container: jugeeya/cargo-skyline:latest
-  
-  steps:
-  - name: Clone master
-    run: git clone https://github.com/ultimate-research/param-hook-plugin
-    working-directory: /volume/
-  - name: Build release NRO
-    run: cargo skyline build --release
-    working-directory: /volume/param-hook-plugin
-  - name: Update Release
-    env:
-      PLUGIN_NAME: 'libparam_hook.nro'  #  change this to the name of your plugin
-    uses: meeDamian/github-release@2.0
-    with:
-      token: ${{ secrets.GITHUB_TOKEN }}
-      prerelease: true
-      allow_override: true
-      gzip: false
-      tag: master
-      name: master
-      body: Build of ${{env.PLUGIN_NAME}} from master.
-      files: >
-        /volume/param-hook-plugin/target/aarch64-skyline-switch/release/${{env.PLUGIN_NAME}}
+  build:
+    runs-on: ubuntu-latest
+    container: jugeeya/cargo-skyline:latest
+
+    steps:
+    - name: Clone master
+      run: git clone https://github.com/ultimate-research/param-hook-plugin
+      working-directory: /volume/
+    - name: Build release NRO
+      run: cargo skyline build --release
+      working-directory: /volume/param-hook-plugin
+    - name: Update Release
+      env:
+        PLUGIN_NAME: 'libparam_hook.nro'  #  change this to the name of your plugin
+      uses: meeDamian/github-release@2.0
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        prerelease: true
+        allow_override: true
+        gzip: false
+        tag: master
+        name: master
+        body: Build of ${{env.PLUGIN_NAME}} from master.
+        files: >
+          /volume/param-hook-plugin/target/aarch64-skyline-switch/release/${{env.PLUGIN_NAME}}
