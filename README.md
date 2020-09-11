@@ -5,12 +5,19 @@ A plugin allowing for centralized hooking of parameter files, allowing multiple 
 
 ## Usage
 ```rust
-fn params_main(params_info: &smash::params::ParamsInfo<'_>) {
-    if let Ok(common) = params_info.get::<StaticCommonParams>() {
+use smash::params::*;
+
+fn params_main(params_info: &ParamsInfo<'_>) {
+    if let Ok(common) = params_info.get::<CommonParams>() {
         common.shield_damage_mul = 0.0;
         common.precede = 3;
         common.cliff_max_count = 0;
         common.invalid_capture_frame = 900;
+    }
+    
+    if let Ok(fighter_param) = params_info.get::<FighterParams>() {
+        let ganon_params = fighter_param[*FIGHTER_KIND_GANON];
+        ganon_params.walk_speed_max = 30.0;
     }
 }
 
