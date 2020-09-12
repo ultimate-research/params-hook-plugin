@@ -16,7 +16,7 @@ fn params_main(params_info: &ParamsInfo<'_>) {
     }
     
     if let Ok(fighter_param) = params_info.get::<FighterParams>() {
-        let ganon_params = fighter_param[*FIGHTER_KIND_GANON];
+        let ganon_params = &mut fighter_param[*FIGHTER_KIND_GANON];
         ganon_params.walk_speed_max = 30.0;
     }
 }
