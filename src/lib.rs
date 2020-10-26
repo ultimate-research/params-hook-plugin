@@ -12,12 +12,12 @@ type Callback = fn(&ParamsInfo);
 
 static HOOKS: Mutex<Vec<Callback>> = Mutex::new(Vec::new());
 
-static mut LOAD_PRC_FILE_OFFSET: usize = 0x34369d0;
+static mut LOAD_PRC_FILE_OFFSET: usize = 0x3539860;
 
 static LOAD_PRC_FILE_SEARCH_CODE: &[u8] = &[
     0xff, 0xc3, 0x01, 0xd1, 0xff, 0xdf, 0x02, 0xa9, 0xf6, 0x57, 0x04, 0xa9, 0xf4, 0x4f, 0x05, 0xa9,
-    0xfd, 0x7b, 0x06, 0xa9, 0xfd, 0x83, 0x01, 0x91, 0xf6, 0x5f, 0x00, 0x32, 0x88, 0x79, 0x00, 0xb0,
-    0x08, 0xed, 0x0f, 0x91, 0xf3, 0x03, 0x00, 0xaa, 0xe8, 0x07, 0x00, 0xf9, 0xe8, 0x03, 0x00, 0x91,
+    0xfd, 0x7b, 0x06, 0xa9, 0xfd, 0x83, 0x01, 0x91, 0xf6, 0x5f, 0x00, 0x32, 0xc8, 0x7b, 0x00, 0xf0,
+    0x08, 0x6d, 0x39, 0x91, 0xf3, 0x03, 0x00, 0xaa, 0xe8, 0x07, 0x00, 0xf9, 0xe8, 0x03, 0x00, 0x91,
     0x3f, 0x00, 0x16, 0x6b,
 ];
 
@@ -25,6 +25,7 @@ static LOAD_PRC_FILE_SEARCH_CODE: &[u8] = &[
 unsafe fn handle_load_prc_file(param_obj: u64, table1_idx: u32) -> u64 {
     let loaded_tables = LoadedTables::get_instance();
     let hash = loaded_tables.get_hash_from_t1_index(table1_idx).as_u64();
+
     let ret = original!()(param_obj, table1_idx);
 
     let param_info = ParamsInfo::new(&param_obj, &hash);
@@ -46,13 +47,12 @@ pub fn main() {
         let text = std::slice::from_raw_parts(text_ptr, text_size);
         if let Some(offset) = find_subsequence(text, LOAD_PRC_FILE_SEARCH_CODE) {
             LOAD_PRC_FILE_OFFSET = offset;
+            install_hook!(handle_load_prc_file);
+            println!("[Param hook] Param hook installed.");
         } else {
-            println!("Error: no offset found for function 'load_prc_file'. Defaulting to 8.1.0 offset. This likely won't work.");
+            println!("Error: no offset found for function 'load_prc_file'. Refusing to install hook.");
         }
     }
-
-    install_hook!(handle_load_prc_file);
-    println!("[Param hook] Param hook installed.");
 }
 
 #[no_mangle]
