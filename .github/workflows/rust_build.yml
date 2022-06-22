@@ -2,7 +2,7 @@ name: Rust Build
 
 env:
   PLUGIN_NAME: 'libparam_hook.nro'
-  VERSION: 'v10.1.0'
+  VERSION: 'v13.0.1'
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
 jobs:
   plugin:
     runs-on: ubuntu-latest
-    container: jugeeya/cargo-skyline:latest
+    container: jugeeya/cargo-skyline:3.0.0-dkp-beta
     steps:
     - name: Clone master
       run: git clone https://github.com/ultimate-research/params-hook-plugin
