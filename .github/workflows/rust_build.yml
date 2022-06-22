@@ -12,17 +12,17 @@ jobs:
     runs-on: ubuntu-latest
     container: jugeeya/cargo-skyline:3.0.0-dkp-beta
     steps:
-    - name: Clone master
-      run: git clone https://github.com/ultimate-research/params-hook-plugin
-      working-directory: /volume/
-    - name: Build release NRO
-      run: cargo skyline build --release
-      working-directory: /volume/params-hook-plugin
-    - name: Upload plugin artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: plugin
-        path: /volume/params-hook-plugin/target/aarch64-skyline-switch/release/${{env.PLUGIN_NAME}}
+      - uses: actions/checkout@v2
+      - name: Build release NRO
+        run: |
+          PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin /root/.cargo/bin/cargo-skyline skyline build --release
+        env:
+          HOME: /root
+      - name: Upload plugin artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: plugin
+          path: target/aarch64-skyline-switch/release/${{env.PLUGIN_NAME}}
   upload:
     runs-on: ubuntu-latest
     needs:
