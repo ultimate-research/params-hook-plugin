@@ -13,7 +13,7 @@ crate-type = ["cdylib"]
 [dependencies]
 skyline = { git = "https://github.com/ultimate-research/skyline-rs.git" }
 skyline_smash = { git = "https://github.com/ultimate-research/skyline-smash.git", features = ["params_internal"] }
-parking_lot = { version = "0.11.0", features = ["nightly"] }
+parking_lot = { version = "0.12.0"}
 
 [profile.dev]
 panic = "abort"
