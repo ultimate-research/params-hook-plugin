@@ -2,13 +2,15 @@ name: Rust Build
 
 env:
   PLUGIN_NAME: 'libparam_hook.nro'
-  VERSION: 'v13.0.1'
+  VERSION: 'v13.0.2'
 
 on:
   push:
     branches: [ master ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
+
 jobs:
   plugin:
     name: Plugin NRO
