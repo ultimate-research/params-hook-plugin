@@ -3,6 +3,7 @@ name: Rust Build
 env:
   PLUGIN_NAME: 'libparam_hook.nro'
   VERSION: 'v13.0.2'
+  ENV SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
 
 on:
   push:
@@ -27,8 +28,8 @@ jobs:
           cache-all-crates: true
       - name: Install Skyline
         run: |
-          cargo install cargo-skyline
-          cargo-skyline skyline update-std
+          ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt cargo install cargo-skyline
+          ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt cargo-skyline skyline update-std
       - name: Build release NRO
         id: build_release
         run: RUSTFLAGS=-g cargo-skyline skyline build --release
