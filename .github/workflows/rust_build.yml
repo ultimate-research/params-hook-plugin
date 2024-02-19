@@ -32,3 +32,23 @@ jobs:
         with:
           name: plugin
           path: target/aarch64-skyline-switch/release/${{env.PLUGIN_NAME}}
+  upload:
+    runs-on: ubuntu-latest
+    needs:
+      - plugin
+    steps:
+    - name: Download all artifacts
+      uses: actions/download-artifact@v2
+    - name: Display structure of downloaded files
+      run: ls -R
+    - name: Upload release
+      uses: meeDamian/github-release@2.0
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        prerelease: true
+        allow_override: true
+        gzip: false
+        tag: ${{env.VERSION}}
+        name: ${{env.VERSION}}
+        body: Build of ${{env.PLUGIN_NAME}} from master.
+        files: ./plugin/${{env.PLUGIN_NAME}}
