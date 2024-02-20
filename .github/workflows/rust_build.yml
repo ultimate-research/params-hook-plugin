@@ -28,8 +28,8 @@ jobs:
           cache-all-crates: true
       - name: Install Skyline
         run: |
-          ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt cargo install cargo-skyline
-          ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt cargo-skyline skyline update-std
+          SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt cargo install cargo-skyline
+          SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt cargo-skyline skyline update-std
       - name: Build release NRO
         id: build_release
         run: RUSTFLAGS=-g cargo-skyline skyline build --release
