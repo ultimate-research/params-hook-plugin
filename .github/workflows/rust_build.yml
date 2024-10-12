@@ -6,7 +6,7 @@ env:
 
 on:
   push:
-    branches: [ master, 13.0.3 ]
+    branches: [ master ]
 jobs:
   plugin:
     runs-on: ubuntu-latest
