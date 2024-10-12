@@ -2,7 +2,7 @@ name: Rust Build
 
 env:
   PLUGIN_NAME: 'libparam_hook.nro'
-  VERSION: 'v13.0.1'
+  VERSION: 'v13.0.3'
 
 on:
   push:
@@ -10,16 +10,26 @@ on:
 jobs:
   plugin:
     runs-on: ubuntu-latest
-    container: jugeeya/cargo-skyline:3.0.0-dkp-beta
     steps:
-      - uses: actions/checkout@v2
-      - name: Build release NRO
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@nightly
+        with:
+          target: x86_64-unknown-linux-gnu
+      - uses: Swatinem/rust-cache@v2
+        name: Rust Cache
+        with:
+          prefix-key: "plugin"
+          cache-all-crates: true
+      - name: Install Skyline
         run: |
-          PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin /root/.cargo/bin/cargo-skyline skyline build --release
+          cargo install cargo-skyline
+          cargo-skyline skyline update-std
+      - name: Build NRO
+        run: RUSTFLAGS=-g cargo-skyline skyline build --release
         env:
           HOME: /root
       - name: Upload plugin artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: plugin
           path: target/aarch64-skyline-switch/release/${{env.PLUGIN_NAME}}
@@ -29,7 +39,7 @@ jobs:
       - plugin
     steps:
     - name: Download all artifacts
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
     - name: Display structure of downloaded files
       run: ls -R
     - name: Upload release
