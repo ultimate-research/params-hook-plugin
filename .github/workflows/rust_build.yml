@@ -2,7 +2,7 @@ name: Rust Build
 
 env:
   PLUGIN_NAME: 'libparam_hook.nro'
-  VERSION: 'v13.0.3'
+  VERSION: 'v13.0.4'
 
 
 on:
