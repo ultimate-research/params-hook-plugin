@@ -12,7 +12,7 @@ type Callback = fn(&ParamsInfo);
 
 static HOOKS: Mutex<Vec<Callback>> = Mutex::new(Vec::new());
 
-static mut LOAD_PRC_FILE_OFFSET: usize = 0x3720530;
+static mut LOAD_PRC_FILE_OFFSET: usize = 0x3720910;
 
 static LOAD_PRC_FILE_SEARCH_CODE: &[u8] = &[
     0xff, 0xc3, 0x01, 0xd1, 
