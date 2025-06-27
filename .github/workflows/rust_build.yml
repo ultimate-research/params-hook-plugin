@@ -34,7 +34,7 @@ jobs:
         run: cargo skyline build --release
 
       - name: Upload plugin artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: plugin
           path: target/aarch64-skyline-switch/release/${{env.PLUGIN_NAME}}
@@ -44,7 +44,7 @@ jobs:
       - plugin
     steps:
     - name: Download all artifacts
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
     - name: Display structure of downloaded files
       run: ls -R
     - name: Upload release
