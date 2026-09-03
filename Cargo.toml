@@ -1,6 +1,6 @@
 [package]
 name = "param_hook"
-version = "13.0.4"
+version = "13.0.5"
 authors = ["jugeeya <jugeeya@live.com>"]
 edition = "2018"
 
@@ -12,7 +12,7 @@ crate-type = ["cdylib"]
 
 [dependencies]
 skyline = { git = "https://github.com/ultimate-research/skyline-rs.git" }
-skyline_smash = { git = "https://github.com/ultimate-research/skyline-smash.git", features = ["params_internal"] }
+skyline_smash = { git = "https://github.com/ultimate-research/skyline-smash.git", rev = "9c20ba7a22fe70e7c3e92c358e8c53e95af1a5e0", features = ["params_internal"] }
 parking_lot = { version = "0.12.0"}
 
 [profile.dev]
