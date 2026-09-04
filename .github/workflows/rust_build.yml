@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: dtolnay/rust-toolchain@1.70
+      - uses: dtolnay/rust-toolchain@nightly
         with:
           target: x86_64-unknown-linux-gnu
       - uses: Swatinem/rust-cache@v2
@@ -28,7 +28,7 @@ jobs:
           cache-all-crates: true
       - name: Install Skyline
         run: |
-          cargo install --git https://github.com/jam1garner/cargo-skyline --force
+          CARGO_NET_GIT_FETCH_WITH_CLI=true cargo install --git https://github.com/jam1garner/cargo-skyline --locked --force
           cargo-skyline skyline update-std
       - name: Build NRO
         run: cargo skyline build --release
