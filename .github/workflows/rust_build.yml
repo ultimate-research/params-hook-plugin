@@ -57,4 +57,4 @@ jobs:
         tag: ${{env.VERSION}}
         name: ${{env.VERSION}}
         body: Build of ${{env.PLUGIN_NAME}} from master.
-        files: ./plugin/${{env.PLUGIN_NAME}}
+        files: ./${{env.PLUGIN_NAME}}
