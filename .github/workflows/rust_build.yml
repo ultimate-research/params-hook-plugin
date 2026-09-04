@@ -28,7 +28,7 @@ jobs:
           cache-all-crates: true
       - name: Install Skyline
         run: |
-          cargo install --git https://github.com/Raytwo/cargo-skyline --branch std-change --force
+          cargo install --git https://github.com/jam1garner/cargo-skyline --force
           cargo-skyline skyline update-std
       - name: Build NRO
         run: cargo skyline build --release
